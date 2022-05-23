@@ -1,13 +1,44 @@
 'use strict';
 
-require('dotenv').config();
+require('dotenv').config('.env');
 const express = require('express');
 const cors = require('cors');
+
+const mongoose = require('mongoose');
+mongoose.connect(process.env.DB_URL)
+
+const Book = require('./models/books.js');
+const res = require('express/lib/response');
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+  console.log('Mongoose is connected');
+});
 
 const app = express();
 app.use(cors());
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
+
+app.get('/', (req, res) => {
+  res.send('this is working')
+})
+
+app.get('/books', getBooks); 
+  async function getBooks(req, res, next) {
+    let queryObject = {};
+    if (req.query.title) {
+      queryObject = {
+        title: req.query.title
+      }
+    }
+    try {
+      let results = await Book.find(queryObject);
+      res.status(200).send(results);
+    } catch (error) {
+      next(error);
+    }
+};
 
 app.get('/test', (request, response) => {
 

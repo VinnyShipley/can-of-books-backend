@@ -17,6 +17,7 @@ db.once('open', function () {
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 const PORT = process.env.PORT || 3002;
 
@@ -24,21 +25,42 @@ app.get('/', (req, res) => {
   res.send('this is working')
 })
 
-app.get('/books', getBooks); 
-  async function getBooks(req, res, next) {
-    let queryObject = {};
-    if (req.query.title) {
-      queryObject = {
-        title: req.query.title
-      }
+app.get('/books', getBooks);
+app.post('/books', postBooks);
+app.delete('/books/:id', deleteBooks);
+
+async function getBooks(req, res, next) {
+  let queryObject = {};
+  if (req.query.title) {
+    queryObject = {
+      title: req.query.title
     }
-    try {
-      let results = await Book.find(queryObject);
-      res.status(200).send(results);
-    } catch (error) {
-      next(error);
-    }
-};
+  }
+  try {
+    let results = await Book.find(queryObject);
+    res.status(200).send(results);
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function postBooks(req, res, next) {
+  try{
+    let createdBook = await Book.create(req.body);
+    res.status(200).send(createdBook);
+  } catch(error) {
+    next(error);
+  }
+}
+
+async function deleteBooks(req, res, next) {
+  try {
+    await Book.findByIdAndDelete(req.params.id);
+    res.status(200).send('book deleted');
+  } catch (error) {
+    next(error);
+  }
+}
 
 app.get('/test', (request, response) => {
 

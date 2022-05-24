@@ -12,6 +12,12 @@ An application meant for storage of book titles that have impacted us and ones t
 <!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
 Go to our URL and have fun reading.
 
+[Netlify Deployed Front-end](https://superb-dragon-70720d.netlify.app)
+
+[Heroku Deployed Back-end](https://can-of-books-stg.herokuapp.com/)
+
+[Trello Board](https://trello.com/b/c79r8837/module-3-can-of-books)
+
 ## Architecture
 <!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
 JavaScript

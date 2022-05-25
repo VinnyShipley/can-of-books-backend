@@ -28,6 +28,8 @@ app.get('/', (req, res) => {
 app.get('/books', getBooks);
 app.post('/books', postBooks);
 app.delete('/books/:id', deleteBooks);
+app.put('/books/:id', updateBooks);
+
 
 async function getBooks(req, res, next) {
   console.log(req);
@@ -64,6 +66,14 @@ async function deleteBooks(req, res, next) {
     next(error);
   }
 }
+
+async function updateBooks(req, res, next) {
+  console.log(req);
+  await Book.findByIdAndUpdate(req.params._id, req.body, {new: true, overwrite: true})
+    .then(updatedBook => res.status(200).send(updatedBook))
+    .catch(error => next(error));
+}
+
 
 app.get('/test', (request, response) => {
 

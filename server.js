@@ -30,6 +30,7 @@ app.post('/books', postBooks);
 app.delete('/books/:id', deleteBooks);
 
 async function getBooks(req, res, next) {
+  console.log(req);
   let queryObject = {};
   if (req.query.title) {
     queryObject = {
@@ -46,6 +47,7 @@ async function getBooks(req, res, next) {
 
 async function postBooks(req, res, next) {
   try{
+    console.log(req);
     let createdBook = await Book.create(req.body);
     res.status(200).send(createdBook);
   } catch(error) {
@@ -55,6 +57,7 @@ async function postBooks(req, res, next) {
 
 async function deleteBooks(req, res, next) {
   try {
+    console.log(req);
     await Book.findByIdAndDelete(req.params.id);
     res.status(200).send('book deleted');
   } catch (error) {
